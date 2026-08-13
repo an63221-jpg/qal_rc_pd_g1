@@ -74,3 +74,4 @@ print(total_sum)
 total_sum = sum([*value_1, *value_2])
 
 print(total_sum)
+print("HELLO OLEKSANDRE")
