@@ -1,5 +1,6 @@
 from source_log import logger
 
+
 def div(a, b):
     try:
         result = a / b
@@ -8,60 +9,55 @@ def div(a, b):
         result = None
     except TypeError as e:
         logger.error(f"Помилка даних: {e}")
-        if not isinstance(a, (int,float)):
-            a = float(a)
-        if not isinstance(b, (int,float)):
-            b = float(b)
-        return div(a, b)
+        try:
+            if not isinstance(a, (int, float)):
+                a = float(a)
+            if not isinstance(b, (int, float)):
+                b = float(b)
+            return div(a, b)
+        except ValueError as float_err:
+            logger.error(f"Неможливо перетворити значення на float: {float_err}")
+            return None
     return result
+
 
 a = 1
 b = "0.000000"
 result = div(a, b)
-
-logger.info(result)
+logger.info(f"Результат div: {result}")
 
 
 def sum(a, b):
     try:
         return a + b
     except (ValueError, TypeError):
-        logger.error("Do not use different type  here")
+        logger.error("Do not use different type here")
         return None
 
-result = sum(a, b)
 
+result = sum(a, b)
 logger.info(result)
 
-logger.info("*"*88)
+logger.info("*" * 88)
+
+
 def divide_numbers(a, b):
     try:
-        return a / b
+        res = a / b
     except ZeroDivisionError:
         logger.error("Помилка: Ділення на нуль.")
+        return None
     else:
-        "Блок else виконується, якщо в блоку try не виникло жодного виключення"
-        logger.info(f"Результат ділення {a} на {b}: {result}")
+        logger.info(f"Результат ділення {a} на {b}: {res}")
+        return res
     finally:
-        # наприклад збереження в файл
         logger.info("Цей блок завжди виконується, незалежно від того, чи виникла помилка чи ні")
+
 
 a = 1
 b = 1
 result = divide_numbers(a, b)
 logger.info(f"result {result}")
-
-# while True:
-#     #logger.info("**")
-#     try:
-#         logger.info("**")
-#     except:
-#         pass #
-
-# try:
-#     pass
-# finally:
-#     pass
 
 
 def check_age(age):
@@ -69,40 +65,23 @@ def check_age(age):
         raise ValueError("Вік не може бути від'ємним")
     return age
 
-# input_age = input("Ваш вік ")
-# check_age(-5)
 
-
-def check_email(mail:str):
+def check_email(mail: str):
     if not isinstance(mail, str):
         raise TypeError("String type only expected")
     if mail.count("@") < 1:
         raise ValueError("@ expected in mailbox")
     return mail
 
-#ZeroDivisionError
-#ValueError
-#TypeError
-#IndexError
-#KeyError
-#StopIteration
-
-#AssertionError
-
 
 def sum_2(a, b):
     assert isinstance(a, (int, float)) and isinstance(b, (int, float)), "int, float is expected"
-    #if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
-    #   raise AssertionError("int, float is expected")
     return a + b
 
-#logger.info(sum_2("a",0))
 
 logger.info(check_email("some@gmail.com"))
 logger.info(check_email("s@g.c"))
 logger.info(check_email("@"))
-# logger.info(check_email(""))
-# logger.info(check_email(1))
 
 
 class TooLargeValueError(Exception):
@@ -113,33 +92,53 @@ class TooLargeValueError(Exception):
         message = f"Значення {value} перевищує ліміт {limit}"
         super().__init__(message)
 
-try:
-    limit = 100
-    user_input = int(input("Введіть число: "))
-
-    if user_input > limit:
-        raise TooLargeValueError(user_input, limit)
-    else:
-        logger.info("Дякую! Ви ввели припустиме значення.")
-except TooLargeValueError as e:
-    logger.error(f"Помилка: {e}")
-except ValueError:
-    logger.error("Помилка: Будь ласка, введіть ціле число.")
-
-
-with open("example.log", "r") as file:
-    content = file.read()
 
 file = None
 try:
-    # Відкриття файлу для читання
     file = open("example.log", "r")
-
-    # Операції змістом файлу
     content = file.read()
-except:
-    logger.error(f"Виникла помилка: {e}")
+except Exception as e:
+    logger.error(f"Виникла помилка при читанні файлу: {e}")
 finally:
-    # Закриття файлу у блоку finally, щоб гарантувати його виклик навіть якщо виникає помилка
     if file is not None:
         file.close()
+
+
+# =========================================================
+# ДОМАШНЄ ЗАВДАННЯ №14: sum_numbers_in_list
+# =========================================================
+def sum_numbers_in_list(string_list: list):
+    """Повертає список сум чисел зі списку строк,
+    які складаються з чисел, розділених комою."""
+    
+    if not isinstance(string_list, list):
+        raise ValueError("Аргумент має бути списком!")
+
+    if not string_list:
+        raise ValueError("Список не може бути порожнім!")
+
+    result_list = []
+    for item in string_list:
+        try:
+            # Парсимо числа
+            numbers = [int(num.strip()) for num in item.split(",")]
+            
+            # Обчислюємо суму вручну через цикл або builtins.sum, щоб уникнути конфлікту з def sum(a, b)
+            total = 0
+            for n in numbers:
+                total += n
+                
+            result_list.append(total)
+        except AttributeError:
+            result_list.append("Не можу це зробити! AttributeError")
+        except ValueError:
+            result_list.append("Не можу це зробити!")
+
+    return result_list
+
+
+if __name__ == "__main__":
+    print("\n--- Перевірка Домашки 14 ---")
+    print(sum_numbers_in_list(["1,2,3", "4,0,6"]))  # [6, 10]
+    print(sum_numbers_in_list(["1,2,3", "asas7,8,9", "4,0,6"]))  # [6, 'Не можу це зробити!', 10]
+    print(sum_numbers_in_list(["1,2,3,4", 7]))  # [10, 'Не можу це зробити! AttributeError']
