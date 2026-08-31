@@ -138,9 +138,7 @@ print(5 % 3)
 
 
 class Person():
-
-    def __new__(cls):
-        cls.__age = 0
+    __age = 0
 
     def __init__(self, age:int = 0) -> None:
         self.age = age
