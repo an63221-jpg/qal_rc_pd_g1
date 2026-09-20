@@ -60,11 +60,11 @@ print(f"Развернутая строка: {reversed_text}")  # Выведет
 """  Написати функцію, яка приймає список слів та повертає найдовше слово у списку.
 """
 def find_longest_word(words):
-    # Если список пустой, возвращаем None, чтобы избежать ошибки
+    
     if not words:
         return None
         
-    # Функция max находит элемент с максимальным значением длины len()
+   
     return max(words, key=len)
 word_list = ["яблоко", "банан", "ананас", "киви", "мандарин"]
 longest = find_longest_word(word_list)
@@ -77,7 +77,7 @@ print(f"Самое длинное слово: {longest}")
 def find_substring(str1, str2):
     return str1.find(str2)
 
-# Вызовы функций теперь находятся НИЖЕ её объявления
+
 str1 = "Hello, world!"
 str2 = "world"
 print(find_substring(str1, str2))  # Теперь вернет 7
@@ -85,7 +85,7 @@ print(find_substring(str1, str2))  # Теперь вернет 7
 str1 = "The quick brown fox jumps over the lazy dog"
 str2 = "cat"
 print(find_substring(str1, str2))  # Теперь вернет -1
-
+#!!!
 # task 7
 # task 8
 # task 9
